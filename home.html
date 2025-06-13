@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>超大数据卖出平台 - Ultimate Data Selling Zone</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      background: linear-gradient(135deg, #111, #222);
+      color: #f2f2f2;
+      font-family: "Arial", sans-serif;
+      padding: 0;
+      margin: 0;
+    }
+    header {
+      background: #0f0f0f;
+      padding: 1em;
+      text-align: center;
+      border-bottom: 2px solid #ff0044;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 2.3em;
+      color: #ff6666;
+    }
+    nav {
+      background: #1c1c1c;
+      text-align: center;
+      padding: 0.5em;
+      font-size: 0.9em;
+    }
+    nav a {
+      color: #ccc;
+      margin: 0 1em;
+      text-decoration: none;
+    }
+    nav a:hover {
+      color: #fff;
+      text-decoration: underline;
+    }
+    section {
+      max-width: 900px;
+      margin: 2em auto;
+      padding: 1.5em;
+      background: #1e1e1e;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(255, 0, 0, 0.1);
+    }
+    h2 {
+      color: #ffaaaa;
+      margin-bottom: 0.5em;
+    }
+    .buyer {
+      margin: 0.3em 0;
+      border-bottom: 1px dashed #444;
+      padding: 0.3em;
+    }
+    .data-line {
+      margin: 0.5em 0;
+    }
+    .price {
+      font-size: 1.8em;
+      font-weight: bold;
+      color: #00ff99;
+      margin-top: 1em;
+    }
+    button {
+      background: #ff3333;
+      color: white;
+      padding: 0.7em 1.5em;
+      font-size: 1em;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 1em;
+    }
+    button:hover {
+      background: #cc0000;
+    }
+    .zh {
+      font-family: "Noto Sans SC", sans-serif;
+      color: #999;
+    }
+    .quote {
+      font-style: italic;
+      margin-top: 1em;
+      color: #aaa;
+    }
+    .qr {
+      margin-top: 1em;
+      background: white;
+      display: inline-block;
+      padding: 10px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>💴 Sell Me Your Data Now Fast Win™ 数据赢利中心</h1>
+  </header>
+  <nav>
+    首页 | 卖出数据 | 价格估计器 | 买家榜单 | English Option Soon | <span class="zh">设置 (Not work)</span>
+  </nav>
+
+  <section>
+    <h2>🕵️ Buyers Currently Watching You 正在注视你的买家</h2>
+    <div id="buyerList"></div>
+  </section>
+
+  <section>
+    <h2>📦 Your Data Extracted 已经被分析的信息</h2>
+    <div id="userData">正在载入... Please wait...</div>
+    <div class="price" id="price">你价值：$28.645</div>
+    <button onclick="sellNow()">💸 SELL DATA NOW!</button>
+  </section>
+
+  <section>
+    <h2>📜 User Feedback (100% Real People, Not AI)</h2>
+    <div class="quote">“I sell data 9 time, buy small boat.” — <strong>Big Boris</strong></div>
+    <div class="quote">“They said I worthless. Now I worth $17.38!” — <strong>Linda, 53</strong></div>
+    <div class="quote">“给我钱谢谢你数据。” — <strong>匿名买家</strong></div>
+  </section>
+
+  <section>
+    <h2>📲 Instant 黑市 Delivery via QR Code:</h2>
+    <div class="qr">
+      <img src="https://api.qrserver.com/v1/create-qr-code/?data=you-have-been-watched&size=150x150" alt="QR">
+    </div>
+  </section>
+
+  <section class="zh">
+    技术支持：数据龙科技有限公司 (DataDragon Inc.) — 版本 Beta 9.8 🐉
+  </section>
+
+  <script>
+    const buyers = [
+      "DeepBuyer™ LLC (合法多了)",
+      "CryptoLake // Netherlands",
+      "Mr. Vaskov, Black Phone User",
+      "🇨🇳 深圳微视光数据",
+      "Anonymous Hedge Fund (maybe CIA?)",
+      "UnicornEye Buyer Engine",
+      "BitTradez Underground",
+      "ZeroDay Holdings Inc.",
+      "Hacker联盟 No.7",
+      "数据王大锤专卖"
+    ];
+
+    function randomBuyers() {
+      const shuffled = buyers.sort(() => 0.5 - Math.random()).slice(0, 5);
+      const list = document.getElementById("buyerList");
+      shuffled.forEach(b => {
+        const div = document.createElement("div");
+        div.className = "buyer";
+        div.textContent = "👀 " + b;
+        list.appendChild(div);
+      });
+    }
+
+    async function fetchUserData() {
+      try {
+        const [httpbin, ipify] = await Promise.all([
+          fetch("https://httpbin.org/get").then(res => res.json()),
+          fetch("https://api.ipify.org?format=json").then(res => res.json())
+        ]);
+
+        const headers = httpbin.headers || {};
+        const ip = ipify.ip;
+        const dataDiv = document.getElementById("userData");
+        dataDiv.innerHTML = "";
+
+        const lines = [
+          ["🌍 Public IP", ip],
+          ["📡 Reported Origin", httpbin.origin],
+          ["🧠 User-Agent", headers["User-Agent"] || headers["user-agent"]],
+          ["🈳 Language", headers["Accept-Language"]],
+          ["📃 Accept Type", headers["Accept"]],
+          ["🧱 Platform", navigator.platform],
+          ["🕒 Local Timezone", Intl.DateTimeFormat().resolvedOptions().timeZone],
+          ["🧭 Language", navigator.language],
+        ];
+
+        lines.forEach(([label, value]) => {
+          const div = document.createElement("div");
+          div.className = "data-line";
+          div.innerHTML = `<strong>${label}</strong>: ${value || "未知"}`;
+          dataDiv.appendChild(div);
+        });
+      } catch (e) {
+        document.getElementById("userData").textContent = "❌ Data not extractable. Try rebooting the surveillance drone.";
+      }
+    }
+
+    function sellNow() {
+      alert("🎉 YOUR DATA IS NOW SOLD TO: 🇰🇵 Pyongyang Insight Exchange.\n$28.64 added to your underground wallet.");
+    }
+
+    randomBuyers();
+    fetchUserData();
+  </script>
+</body>
+</html>
